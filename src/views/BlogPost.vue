@@ -1,5 +1,5 @@
 <template>
-  <div class="post" v-if="post && author">
+  <div class="post" v-if="post">
     <article>
       <div class="image">
         <img :alt="post.fields.title" :src="`${post.fields.image[0].fields.file.url}?w=1680&h=750&fit=crop`">
@@ -7,9 +7,6 @@
       <div class="content-wrapper">
         <h2>{{ post.fields.title }}</h2>
         <div class="content" v-html="post.fields.content.html"></div>
-        <div class="author">
-          <img :src="`${author.fields.avatar[0].fields.file.url}?w=30&h=30&fit=crop`" alt="author.fields.name"> Written by {{ author.fields.name }}
-        </div>
       </div>
     </article>
   </div>
@@ -24,8 +21,7 @@
     name: 'blogPost',
     data() {
       return {
-        post: null,
-        author: null,
+        post: null
       }
     },
     methods: {
@@ -40,7 +36,6 @@
         comfortable.getDocuments(options)
         .then(result => {
           this.post = result.data[0];
-          this.author = _.find(result.includes.author, { meta: { id: this.post.fields.author[0].meta.id } });
         })
         .catch(err => {
           throw err;
